@@ -1,4 +1,4 @@
-# 在Linux使用wine编译Windows可以使用的C# Native Aot
+# 在Linux通过wine编译能在Windows使用的C# Native Aot
 
 
 使用的Linux发行版: [`Arch Linux`](https://archlinux.org/)
