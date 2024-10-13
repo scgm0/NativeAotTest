@@ -8,6 +8,7 @@
         <InvariantGlobalization>true</InvariantGlobalization>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>
+        <MSVCWineBinPath>/opt/msvc/bin</MSVCWineBinPath>
     </PropertyGroup>
 
     <Import Project="PublishAotCross.targets"/>

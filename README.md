@@ -14,6 +14,7 @@
 
 - 3.运行`wine regedit`修改注册表`HKEY_CURRENT_USER\Environment`添加以下环境变量：
   ```
+  `/opt/msvc`是aur中`msvc-wine-git`的默认安装路径，如果安装在了其他路径请自行替换
   PATH: /opt/msvc/VC/Tools/MSVC/14.41.34120/bin/Hostx64/x64
   LIB: /opt/msvc/Windows Kits/10/Lib/10.0.22621.0/um/x64;Z:/opt/msvc/Windows Kits/10/Lib/10.0.22621.0/ucrt/x64;/opt/msvc/VC/Tools/MSVC/14.41.34120/lib/x64
   ```
@@ -27,14 +28,13 @@
 ## 方案二（推荐）
 - 1.使用 AUR 助手[`yay`](https://github.com/Jguer/yay)或[`paru`](https://github.com/Morganamilo/paru)安装[`wine`](https://www.winehq.org/)和[`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)
 
-- 2.运行`wine regedit`修改注册表`HKEY_CURRENT_USER\Environment`添加以下环境变量：
+- 2.在项目中引入`PublishAotCross.targets`
   ```
-  PATH: /opt/msvc/VC/Tools/MSVC/14.41.34120/bin/Hostx64/x64
-  LIB: /opt/msvc/Windows Kits/10/Lib/10.0.22621.0/um/x64;Z:/opt/msvc/Windows Kits/10/Lib/10.0.22621.0/ucrt/x64;/opt/msvc/VC/Tools/MSVC/14.41.34120/lib/x64
+  (可选)
+  如果`msvc-wine-git`安装目录不是`/opt/msvc`，请在项目中添加`MSVCWineBinPath`属性
+  默认为<MSVCWineBinPath>/opt/msvc/bin</MSVCWineBinPath>
   ```
 
-- 3.在项目中引入`PublishAotCross.targets`
+- 3.在项目根目录运行`dotnet publish ./ -r win-x64 -c Release`触发编译
 
-- 4.在项目根目录运行`dotnet publish ./ -r win-x64 -c Release`触发编译
-
-- 5.运行编译结果`wine ./bin/Release/net9.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
+- 4.运行编译结果`wine ./bin/Release/net9.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`

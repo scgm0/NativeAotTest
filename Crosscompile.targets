@@ -5,11 +5,30 @@
         <DisableUnsupportedError>true</DisableUnsupportedError>
     </PropertyGroup>
 
+    <UsingTask TaskName="PrependPath"
+               TaskFactory="RoslynCodeTaskFactory"
+               AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+
+        <ParameterGroup>
+            <Value ParameterType="System.String" Required="true"/>
+        </ParameterGroup>
+
+        <Task>
+            <Using Namespace="System"/>
+            <Using Namespace="System.IO"/>
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                    Value ??= "/opt/msvc/bin";
+                    Environment.SetEnvironmentVariable("PATH", Value + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH"));
+                ]]>
+            </Code>
+        </Task>
+
+    </UsingTask>
+
     <Target Name="SetPathToClang"
             BeforeTargets="SetupOSSpecificProps">
-        <PropertyGroup>
-            <CppLinker>"wine link"</CppLinker>
-        </PropertyGroup>
+        <PrependPath Value="$(MSVCWineBinPath)/$(_targetArchitecture)"/>
     </Target>
 
     <Target Name="OverwriteTargetTriple"
