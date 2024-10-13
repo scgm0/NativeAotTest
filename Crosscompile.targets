@@ -16,12 +16,13 @@
             AfterTargets="SetupOSSpecificProps"
             BeforeTargets="LinkNative">
         <ItemGroup>
-            <LinkerArg Include="Z:$(IlcSdkPath)$(BootstrapperName)$(ObjectSuffix)"/>
-            <LinkerArg Include="Z:$(IlcSdkPath)$(FullRuntimeName)$(LibrarySuffix)"/>
-            <LinkerArg Include="Z:$(IlcSdkPath)$(EventPipeName)$(LibrarySuffix)"/>
-            <LinkerArg Condition="'$(_targetArchitecture)' == 'x64'" Include="Z:$(IlcSdkPath)$(VxSortSupportName)$(LibrarySuffix)"/>
-            <LinkerArg Include="Z:$(IlcSdkPath)$(StandaloneGCSupportName)$(LibrarySuffix)"/>
-            <LinkerArg Include="Z:$(IlcSdkPath)zlibstatic$(LibFileExt)"/>
+            <LinkerArg Include="@(LinkerArg->'%(Identity)')">
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath))) == 'true'">Z:%(Identity)</UpdatePath>
+                <RemovePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath))) == 'true'">%(Identity)</RemovePath>
+            </LinkerArg>
+
+            <LinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
+            <LinkerArg Remove="@(LinkerArg->'%(RemovePath)')"/>
         </ItemGroup>
     </Target>
 </Project>
