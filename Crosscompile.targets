@@ -1,0 +1,27 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>
+        <DisableUnsupportedError>true</DisableUnsupportedError>
+    </PropertyGroup>
+
+    <Target Name="SetPathToClang"
+            BeforeTargets="SetupOSSpecificProps">
+        <PropertyGroup>
+            <CppLinker>"wine link"</CppLinker>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="OverwriteTargetTriple"
+            AfterTargets="SetupOSSpecificProps"
+            BeforeTargets="LinkNative">
+        <ItemGroup>
+            <LinkerArg Include="Z:$(IlcSdkPath)$(BootstrapperName)$(ObjectSuffix)"/>
+            <LinkerArg Include="Z:$(IlcSdkPath)$(FullRuntimeName)$(LibrarySuffix)"/>
+            <LinkerArg Include="Z:$(IlcSdkPath)$(EventPipeName)$(LibrarySuffix)"/>
+            <LinkerArg Condition="'$(_targetArchitecture)' == 'x64'" Include="Z:$(IlcSdkPath)$(VxSortSupportName)$(LibrarySuffix)"/>
+            <LinkerArg Include="Z:$(IlcSdkPath)$(StandaloneGCSupportName)$(LibrarySuffix)"/>
+            <LinkerArg Include="Z:$(IlcSdkPath)zlibstatic$(LibFileExt)"/>
+        </ItemGroup>
+    </Target>
+</Project>

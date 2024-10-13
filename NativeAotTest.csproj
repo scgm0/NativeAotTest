@@ -6,8 +6,9 @@
         <Nullable>enable</Nullable>
         <PublishAot>true</PublishAot>
         <InvariantGlobalization>true</InvariantGlobalization>
-        <IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>
-        <DisableUnsupportedError>true</DisableUnsupportedError>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>
     </PropertyGroup>
+
+    <Import Project="PublishAotCross.targets"/>
 </Project>
