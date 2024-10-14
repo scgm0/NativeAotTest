@@ -36,8 +36,8 @@
             BeforeTargets="LinkNative">
         <ItemGroup>
             <LinkerArg Include="@(LinkerArg->'%(Identity)')">
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).Contains('/home/'))">"$([System.String]::Copy(%(Identity)).Replace("/home/", "Z:/home/"))"</UpdatePath>
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).Contains('/home/')) == false">%(Identity)</UpdatePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith('/home/'))">"Z:%(Identity)"</UpdatePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith('/home/')) == false">%(Identity)</UpdatePath>
             </LinkerArg>
 
             <NewLinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
@@ -45,7 +45,7 @@
             <LinkerArg Include="@(NewLinkerArg)"/>
         </ItemGroup>
         <PropertyGroup>
-            <NativeObject Condition="$(NativeObject.Contains('/home/'))">$(NativeObject.Replace("/home/", "Z:/home/"))</NativeObject>
+            <NativeObject Condition="$(NativeObject.StartsWith('/home/'))">Z:$(NativeObject)</NativeObject>
         </PropertyGroup>
     </Target>
 </Project>
