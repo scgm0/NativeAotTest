@@ -36,8 +36,8 @@
             BeforeTargets="LinkNative">
         <ItemGroup>
             <LinkerArg Include="@(LinkerArg->'%(Identity)')">
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath)))">"Z:$([System.String]::Copy(%(Identity)))"</UpdatePath>
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath))) == false">%(Identity)</UpdatePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).Contains($(IlcSdkPath)))">"$([System.String]::Copy(%(Identity)).Replace($(IlcSdkPath), "Z:$(IlcSdkPath)"))"</UpdatePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).Contains($(IlcSdkPath))) == false">%(Identity)</UpdatePath>
             </LinkerArg>
 
             <NewLinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
