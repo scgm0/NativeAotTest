@@ -36,12 +36,13 @@
             BeforeTargets="LinkNative">
         <ItemGroup>
             <LinkerArg Include="@(LinkerArg->'%(Identity)')">
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath))) == 'true'">Z:%(Identity)</UpdatePath>
-                <RemovePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath))) == 'true'">%(Identity)</RemovePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath)))">"Z:$([System.String]::Copy(%(Identity)))"</UpdatePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith($(IlcSdkPath))) == false">%(Identity)</UpdatePath>
             </LinkerArg>
 
-            <LinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
-            <LinkerArg Remove="@(LinkerArg->'%(RemovePath)')"/>
+            <NewLinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
+            <LinkerArg Remove="@(LinkerArg)"/>
+            <LinkerArg Include="@(NewLinkerArg)"/>
         </ItemGroup>
     </Target>
 </Project>
