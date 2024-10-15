@@ -10,7 +10,7 @@
 
 - 1.使用 AUR 助手[`yay`](https://github.com/Jguer/yay)或[`paru`](https://github.com/Morganamilo/paru)安装[`wine`](https://www.winehq.org/)和[`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)
 
-- 2.在[`.Net`](https://dotnet.microsoft.com)官网下载[`dotnet9`](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0)的`exe`安装程序，使用`wine`运行并安装
+- 2.在[`.Net`](https://dotnet.microsoft.com)官网下载[`dotnet8`](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0)的`exe`安装程序，使用`wine`运行并安装
 
 - 3.运行`wine regedit`修改注册表`HKEY_CURRENT_USER\Environment`添加以下环境变量：
   ```
