@@ -28,7 +28,7 @@
 ## 方案二（推荐）
 - 1.使用 AUR 助手[`yay`](https://github.com/Jguer/yay)或[`paru`](https://github.com/Morganamilo/paru)安装[`wine`](https://www.winehq.org/)和[`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)
 
-- 2.在项目中引入`PublishAotCross.targets`
+- 2.在项目中引入`PublishAotCross.targets`(复制到其他项目中时，`PublishAotCross.targets`和`Crosscompile.targets`应该一起复制)
   ```
   (可选)
   如果`msvc-wine-git`安装目录不是`/opt/msvc`，请在项目中添加`MSVCWineBinPath`属性
