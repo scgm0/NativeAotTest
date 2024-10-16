@@ -23,7 +23,7 @@
 
 - 5.在项目根目录运行`wine dotnet publish ./ -r win-x64 -c Release`触发编译
 
-- 6.运行编译结果`wine ./bin/Release/net9.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
+- 6.运行编译结果`wine ./bin/Release/net8.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
 
 ## 方案二（推荐）
 - 1.使用 AUR 助手[`yay`](https://github.com/Jguer/yay)或[`paru`](https://github.com/Morganamilo/paru)安装[`wine`](https://www.winehq.org/)和[`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)
@@ -37,4 +37,4 @@
 
 - 3.在项目根目录运行`dotnet publish ./ -r win-x64 -c Release`触发编译
 
-- 4.运行编译结果`wine ./bin/Release/net9.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
+- 4.运行编译结果`wine ./bin/Release/net8.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
