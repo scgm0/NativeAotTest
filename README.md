@@ -8,7 +8,7 @@
 
 ### 1. 安装依赖
 
-使用 AUR 助手 (例如 [`yay`](https://github.com/Jguer/yay) 或 [`paru`](https://github.com/Morganamilo/paru)) 安装 [`lld`](https://lld.llvm.org) 和 [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)。这一步是为了确保系统中存在 `lld-link` 命令以及 MCSV 工具链。
+使用 AUR 助手 (例如 [`yay`](https://github.com/Jguer/yay) 或 [`paru`](https://github.com/Morganamilo/paru)) 安装 [`lld`](https://lld.llvm.org) 和 [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)。这一步是为了确保系统中存在 `lld-link` 命令以及 `Windows SDK`。
 
 ```bash
 # 使用 yay
@@ -62,7 +62,7 @@ This document describes how to cross-compile a C# Native AOT project on Arch Lin
 
 ### 1. Install Dependencies
 
-Use an AUR helper (like [`yay`](https://github.com/Jguer/yay) or [`paru`](https://github.com/Morganamilo/paru)) to install [`lld`](https://lld.llvm.org) and [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine). This step ensures that the `lld-link` command and the MSVC toolchain are available on your system.
+Use an AUR helper (like [`yay`](https://github.com/Jguer/yay) or [`paru`](https://github.com/Morganamilo/paru)) to install [`lld`](https://lld.llvm.org) and [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine). This step ensures that the `lld-link` command and the `Windows SDK` are available on your system.
 
 ```bash
 # Using yay
