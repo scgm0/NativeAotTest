@@ -29,9 +29,7 @@ paru -S lld msvc-wine-git
 
 ### 2. 在项目中引入构建脚本
 
-将 `PublishAotCross.targets` 和 `Crosscompile.targets` 这两个文件复制到您的项目目录中。
-
-在 `.csproj` 文件中引入 `PublishAotCross.targets` 以启用交叉编译功能。
+在 `.csproj` 文件中引入 [`PublishAotCross.LinuxToWin`](https://www.nuget.org/packages/PublishAotCross.LinuxToWin) 以启用交叉编译功能。
 
 ### 3. 执行编译
 
@@ -83,9 +81,7 @@ paru -S lld msvc-wine-git
 
 ### 2. Include Build Scripts in Your Project
 
-Copy the `PublishAotCross.targets` and `Crosscompile.targets` files into your project directory.
-
-Import `PublishAotCross.targets` in your `.csproj` file to enable the cross-compilation functionality.
+Import [`PublishAotCross.LinuxToWin`](https://www.nuget.org/packages/PublishAotCross.LinuxToWin) in your `.csproj` file to enable the cross-compilation functionality.
 
 ### 3. Compile the Project
 

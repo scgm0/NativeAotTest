@@ -11,5 +11,7 @@
         <MSVCWineBinPath>/opt/msvc/bin</MSVCWineBinPath>
     </PropertyGroup>
 
-    <Import Project="PublishAotCross.targets"/>
+    <ItemGroup>
+        <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
+    </ItemGroup>
 </Project>
