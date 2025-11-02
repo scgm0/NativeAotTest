@@ -1,40 +1,106 @@
-# 在 Linux 通过 wine 编译能在 Windows 使用的 C# Native Aot
+# 在 Linux 通过 lld 与 msvc-wine 编译 Windows C# Native AOT
 
-使用的 Linux 发行版: [`Arch Linux`](https://archlinux.org/)
+本文档介绍了如何在 Arch Linux 环境下，使用 [`lld`](https://lld.llvm.org) 和 [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine) 交叉编译 C# Native AOT 项目，使其能够在 Windows 上运行。
 
-- [在 Linux 通过 wine 编译能在 Windows 使用的 C# Native Aot](#在linux通过wine编译能在windows使用的c-native-aot)
-  - [方案一](#方案一)
-  - [方案二（推荐）](#方案二推荐)
+**使用的 Linux 发行版:** [Arch Linux](https://archlinux.org/)
 
-## 方案一
+## 具体步骤
 
-- 1.使用 AUR 助手[`yay`](https://github.com/Jguer/yay)或[`paru`](https://github.com/Morganamilo/paru)安装[`wine`](https://www.winehq.org/)和[`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)
+### 1. 安装依赖
 
-- 2.在[`.Net`](https://dotnet.microsoft.com)官网下载[`dotnet8`](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0)的`exe`安装程序，使用`wine`运行并安装
+使用 AUR 助手 (例如 [`yay`](https://github.com/Jguer/yay) 或 [`paru`](https://github.com/Morganamilo/paru)) 安装 [`lld`](https://lld.llvm.org) 和 [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)。这一步是为了确保系统中存在 `lld-link` 命令以及 MCSV 工具链。
 
-- 3.运行`wine regedit`修改注册表`HKEY_CURRENT_USER\Environment`添加以下环境变量：
-  ```
-  `/opt/msvc`是aur中`msvc-wine-git`的默认安装路径，如果安装在了其他路径请自行替换
-  PATH: /opt/msvc/VC/Tools/MSVC/14.41.34120/bin/Hostx64/x64
-  LIB: /opt/msvc/Windows Kits/10/Lib/10.0.22621.0/um/x64;Z:/opt/msvc/Windows Kits/10/Lib/10.0.22621.0/ucrt/x64;/opt/msvc/VC/Tools/MSVC/14.41.34120/lib/x64
-  ```
+```bash
+# 使用 yay
+yay -S lld msvc-wine-git
 
-- 4.设置项目属性`<IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>`
+# 或者使用 paru
+paru -S lld msvc-wine-git
+```
 
-- 5.在项目根目录运行`wine dotnet publish ./ -r win-x64 -c Release`触发编译
+> **注意**
+>
+> `msvc-wine-git` 的默认安装目录是 `/opt/msvc`。如果您的安装目录不同，请在 `.csproj` 项目文件中添加 `MSVCWineBinPath` 属性来指定正确的路径，例如：
+> ```xml
+> <PropertyGroup>
+>   <MSVCWineBinPath>/path/to/your/msvc/bin</MSVCWineBinPath>
+> </PropertyGroup>
+> ```
 
-- 6.运行编译结果`wine ./bin/Release/net8.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
+### 2. 在项目中引入构建脚本
 
-## 方案二（推荐）
-- 1.使用 AUR 助手[`yay`](https://github.com/Jguer/yay)或[`paru`](https://github.com/Morganamilo/paru)安装[`wine`](https://www.winehq.org/)和[`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine)
+将 `PublishAotCross.targets` 和 `Crosscompile.targets` 这两个文件复制到您的项目目录中。
 
-- 2.在项目中引入`PublishAotCross.targets`(复制到其他项目中时，`PublishAotCross.targets`和`Crosscompile.targets`应该一起复制)
-  ```
-  (可选)
-  如果`msvc-wine-git`安装目录不是`/opt/msvc`，请在项目中添加`MSVCWineBinPath`属性
-  默认为<MSVCWineBinPath>/opt/msvc/bin</MSVCWineBinPath>
-  ```
+在 `.csproj` 文件中引入 `PublishAotCross.targets` 以启用交叉编译功能。
 
-- 3.在项目根目录运行`dotnet publish ./ -r win-x64 -c Release`触发编译
+### 3. 执行编译
 
-- 4.运行编译结果`wine ./bin/Release/net8.0/win-x64/publish/NativeAotTest.exe`，成功打印`Hello, World!`
+在您的项目根目录打开终端，运行以下命令来为 Windows x64 平台发布 Release 版本的应用：
+
+```bash
+dotnet publish ./ -r win-x64 -c Release
+```
+
+### 4. 验证编译结果
+
+编译成功后，可以使用 [`wine`](https://www.winehq.org) 运行生成的可执行文件，验证程序是否能正常工作。
+
+```bash
+wine ./bin/Release/net8.0/win-x64/publish/YourProjectName.exe
+```
+
+如果一切顺利，您应该能看到程序成功打印出 `Hello, World!` 或其他预期的输出。
+
+
+# Compiling Windows C# Native AOT on Linux using lld and msvc-wine
+
+This document describes how to cross-compile a C# Native AOT project on Arch Linux using [`lld`](https://lld.llvm.org) and [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine) to run on Windows.
+
+**Linux Distribution Used:** [Arch Linux](https://archlinux.org/)
+
+## Steps
+
+### 1. Install Dependencies
+
+Use an AUR helper (like [`yay`](https://github.com/Jguer/yay) or [`paru`](https://github.com/Morganamilo/paru)) to install [`lld`](https://lld.llvm.org) and [`msvc-wine-git`](https://github.com/mstorsjo/msvc-wine). This step ensures that the `lld-link` command and the MSVC toolchain are available on your system.
+
+```bash
+# Using yay
+yay -S lld msvc-wine-git
+
+# Or using paru
+paru -S lld msvc-wine-git
+```
+
+> **Note**
+>
+> The default installation directory for `msvc-wine-git` is `/opt/msvc`. If your installation path is different, please add the `MSVCWineBinPath` property in your `.csproj` project file to specify the correct path, for example:
+> ```xml
+> <PropertyGroup>
+>   <MSVCWineBinPath>/path/to/your/msvc/bin</MSVCWineBinPath>
+> </PropertyGroup>
+> ```
+
+### 2. Include Build Scripts in Your Project
+
+Copy the `PublishAotCross.targets` and `Crosscompile.targets` files into your project directory.
+
+Import `PublishAotCross.targets` in your `.csproj` file to enable the cross-compilation functionality.
+
+### 3. Compile the Project
+
+Open a terminal in your project's root directory and run the following command to publish a Release version of your application for the Windows x64 platform:
+
+```bash
+dotnet publish ./ -r win-x64 -c Release
+```
+
+### 4. Verify the Compilation Result
+
+After a successful compilation, you can use [`wine`](https://www.winehq.org) to run the generated executable and verify that the program works correctly.
+
+```bash
+wine ./bin/Release/net8.0/win-x64/publish/YourProjectName.exe
+```
+
+If everything is successful, you should see the program print `Hello, World!` or other expected output.
